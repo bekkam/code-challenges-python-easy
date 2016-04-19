@@ -29,8 +29,17 @@ def print_digits(num):
         print num_string.pop()
 
 
+# Alternative solution
+def print_digits(num):
 
-# print print_digits(413)
+    while not num % 10 == num:
+
+        next_digit = num % 10
+        print next_digit
+        num = (num - next_digit) / 10
+
+    print num
+
 
 if __name__ == '__main__':
     import doctest
