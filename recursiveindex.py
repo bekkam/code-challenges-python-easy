@@ -20,28 +20,31 @@ For example:
 
 """
 
-
-def recursive_index(needle, haystack, current_index):
+def recursive_index(needle, haystack):
     """Given list (haystack), return index (0-based) of needle in the list.
 
     Return None if needle is not in haystack.
 
     Do this with recursion. You MAY NOT USE A `for` OR `while` LOOP.
     """
+    def recursive_index(needle, haystack, current_index):
 
-    if not haystack:
-        return None
+        if current_index == len(haystack):
+            return None
 
-    if haystack[current_index] == needle:
-        return current_index
+        if haystack[current_index] == needle:
+            return current_index
 
-    return recursive_index(needle, haystack, current_index + 1)
+        return recursive_index(needle, haystack, current_index + 1)
+
+    # start our recursion
+    return recursive_index(needle, haystack, 0)
 
 
-print recursive_index(5, [1, 3, 5, 2, 4], 0)
+# print recursive_index(5, [1, 3, 5, 2, 4], 0)
 
 
-# if __name__ == '__main__':
-#     import doctest
-#     if doctest.testmod().failed == 0:
-#         print "\n*** ALL TESTS PASSED. GO GO GO!\n"
+if __name__ == '__main__':
+    import doctest
+    if doctest.testmod().failed == 0:
+        print "\n*** ALL TESTS PASSED. GO GO GO!\n"
