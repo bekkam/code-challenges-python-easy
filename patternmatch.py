@@ -101,6 +101,49 @@ def pattern_match(pattern, astring):
 
     return False
 
+
+# Solution 2 (HB)
+def pattern_match(pattern, astring):
+    """Can we make this pattern match this string?"""
+
+    # Q&D sanity check on pattern
+
+    assert (pattern.replace("a", "").replace("b", "") == ""
+            and pattern.startswith("a")), "invalid pattern"
+
+    # START SOLUTION
+
+    count_a = pattern.count("a")  # num times a appears in pattern
+    count_b = pattern.count("b")  # num times b appears in pattern
+    first_b = pattern.find("b")  # index of first b (-1 if not in pattern)
+
+    # We'll check every possible length of a, from 0 to the max
+    # (where the max is affected by the count of how many a's must appear)
+
+    for a_length in range(0, len(astring) / count_a + 1):
+
+        # For this length of a, find required length of b
+        if count_b:
+            b_length = (len(astring) - (a_length * count_a)) / float(count_b)
+        else:
+            b_length = 0
+
+        # Fast fail optimization: b_length must be int and >= 0
+        if int(b_length) != b_length or b_length < 0:
+            continue
+
+        # Find where b would need to begin
+        b_start = first_b * a_length
+
+        # Check if this is a workable match; if so, we win!
+        if matches(pattern=pattern,
+                   a=astring[0:a_length],
+                   b=astring[b_start:b_start + int(b_length)],
+                   astring=astring):
+            return True
+
+    return False
+
 if __name__ == '__main__':
     import doctest
 
