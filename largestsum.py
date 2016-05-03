@@ -51,12 +51,14 @@ def largest_sum(nums):
         if end > len(nums):
             return nums[max_start: max_stop]
 
+        # if current subseqence is greater than max_sum, save its sum as the new
+        # max_sum, and save its start and endpoints
         if sum(array[start:end]) > max_sum:
             max_sum = sum(array[start:end])
             max_start = start
             max_stop = end
 
-        # if sum of current sequence is <= 0:
+        # if sum of current sequence is <= 0, reset the start position
         if sum(array[start:end]) <= 0:
             start = end
 
@@ -64,6 +66,40 @@ def largest_sum(nums):
 
     return get_largest_sum(0, nums, 0, 0, 0, 0)
 
+
+# ###################################################################
+# HB solution
+
+def largest_sum(nums):
+    """Find subsequence with largest sum."""
+
+    # START SOLUTION
+
+    # Our best (update as we find new bests)
+    best_sum = 0
+    start_of_best = 0
+    end_of_best = -1  # (nothing)
+
+    # Current sum and start
+    current_sum = 0
+    start_of_curr = 0
+
+    for i, n in enumerate(nums):
+        current_sum += n
+
+        if current_sum > best_sum:
+            # Best so far -- record this sum & its start and end
+            best_sum = current_sum
+            start_of_best = start_of_curr
+            end_of_best = i
+
+        if current_sum <= 0:
+            # Dropped belonw 1, so we can't improve -- reset
+            # start_of_best, to begin with next number
+            start_of_curr = i + 1
+            current_sum = 0
+
+    return nums[start_of_best:end_of_best + 1]
 
 if __name__ == '__main__':
     import doctest
