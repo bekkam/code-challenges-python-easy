@@ -30,8 +30,9 @@ For example:
     >>> coins(10) == {10, 19, 28, 37, 46, 55, 64, 73, 82, 91, 100}
     True
 """
-
-
+# #######################################################################
+# Solution 1: iterative solution
+# Runtime: O(N)
 def coins(num_coins):
     """Find change from combinations of `num_coins` of dimes and pennies.
 
@@ -58,6 +59,92 @@ def coins(num_coins):
         count += 1
 
     return result
+
+# # ##########################################################################
+# # Solution 2: recursive solution
+
+def coins(num_coins):
+    """Find change from combinations of `num_coins` of dimes and pennies.
+
+    This should return a set of the unique amounts of change possible.
+    """
+
+    """
+    handle 0 case.
+    start with pennies * num.
+    increment count.
+    subract 1 penny, add 1 dime.
+    repeat until total is num * dimes
+
+    """
+    results = set()
+    PENNIES = 1
+    DIMES = 10
+
+    def _create_change(num_coins, pennies, dimes):
+        # base case: num_coins is 0:
+        if num_coins == 0:
+            results.add(0)
+            return results
+
+        # base case: results includes change combination of 0 pennies, all dimes
+        if pennies == -1:
+            return results
+
+        # call recursively until penny count = 0 (eg result is all dimes)
+        total = (PENNIES * pennies) + (DIMES * dimes)
+        results.add(total)
+        return _create_change(num_coins, pennies - 1, dimes + 1)
+
+    # call recursive method, with all pennies and 0 dimes
+    return _create_change(num_coins, num_coins, 0)
+
+
+# ########################################################################
+# HB Solution
+DIME = 10
+PENNY = 1
+
+# Runtime: O(N * 2 + 1) --> O(N)???
+def add_coins(left, total, results):
+    """Add combos coins to total.
+
+    If this is the last time we can add coins, return change.
+
+    Otherwise, recursively call until that condition.
+
+        >>> results = set()
+        >>> add_coins(left=1, total=0, results=results)
+        >>> results == set([1, 10])
+        True
+    """
+
+    if left == 0:
+        # Base Case
+        # We've added all the coins we're supposed to, so keep
+        # track of this total of change and stop recursing
+        results.add(total)
+        return
+
+    # Fork into two recursions, one adding a dime and another a penny
+    # For each, we'll have 1 fewer coin to add afterwards, so left -= 1
+
+    add_coins(left - 1, total + DIME, results)
+    add_coins(left - 1, total + PENNY, results)
+
+def coins(num_coins):
+    """Find change from combinations of `num_coins` of dimes and pennies.
+
+    This should return a set of the unique amounts of change possible.
+    """
+
+    # START SOLUTION
+
+    results = set()
+
+    add_coins(left=num_coins, total=0, results=results)
+
+    return results
 
 if __name__ == '__main__':
     import doctest
