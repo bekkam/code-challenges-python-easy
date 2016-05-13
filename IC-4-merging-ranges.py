@@ -21,14 +21,20 @@ def condense_meeting_times1(list_of_tuples_of_meeting_times):
     end time is the later of the two meetings' end times.
     3. Else, we leave them separate.
 
+    Case 2:
     >>> condense_meeting_times1([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])
     [(0, 1), (3, 8), (9, 12)]
 
     >>> condense_meeting_times1([(1, 5), (2, 3)])
     [(1, 5)]
 
+    Case 1
     >>> condense_meeting_times1([(1, 10), (2, 6), (3, 5), (7, 9)])
     [(1, 10)]
+
+    Case 0:
+    >>> condense_meeting_times1([(1, 10), (2, 6), (3, 5), (1, 11), (7, 9), (1, 15)])
+    [(1, 15)]
     """
 
     list_of_tuples_of_meeting_times.sort()
@@ -39,10 +45,22 @@ def condense_meeting_times1(list_of_tuples_of_meeting_times):
     i = -1
     j = 0
     result = []
+    length = len(list_of_tuples_of_meeting_times)
 
-    while j < len(list_of_tuples_of_meeting_times):
+    while j < length - 1:
         i += 1
         j += 1
+
+        # Case 0:
+        # if the first and 2nd meeting start at the same time:
+            # if 2nd meeting is the last tuple, add it to result and end looping
+            # else, skip to next iteration
+        if list_of_tuples_of_meeting_times[i][0] == list_of_tuples_of_meeting_times[j][0]:
+            if j == length - 1:
+                result.append(list_of_tuples_of_meeting_times[j])
+                break
+            else:
+                continue
 
         # Case 1:
         # if both the start and end of first is within range of most recently
@@ -50,17 +68,14 @@ def condense_meeting_times1(list_of_tuples_of_meeting_times):
         if len(result) >= 1:
             last_added = result[-1]
             if list_of_tuples_of_meeting_times[i][1] <= last_added[1]:
-            # skip to next iteration
                 continue
 
         # Case 2:
-        # if first end >= 2nd start - that is, first meeting ends after 2nd
-        # meeting starts - then the 2nd meeting either ends later than the 1st
-        # meeting ends, or it doesnt.
+        # if first meeting ends after the start of the 2nd meeting, then the 2nd meeting
+        # either ends after the first meeting ends, or it doesnt.
         if list_of_tuples_of_meeting_times[i][1] >= list_of_tuples_of_meeting_times[j][0]:
-            # if 1st end >= 2nd end - that is, if first meeting ends the same
-            # time or after the 2nd meeting ends - then add the first meetings
-            # start and end times to result
+            # if first meeting ends the same time or after the 2nd meeting ends,
+            # then add the first meetings start and end times to result
             start = list_of_tuples_of_meeting_times[i][0]
             if list_of_tuples_of_meeting_times[i][1] >= list_of_tuples_of_meeting_times[j][1]:
                 stop = list_of_tuples_of_meeting_times[i][1]
@@ -68,6 +83,7 @@ def condense_meeting_times1(list_of_tuples_of_meeting_times):
             # end to result
             else:
                 stop = list_of_tuples_of_meeting_times[j][1]
+
             result.append((start, stop))
             # increment counters and skip to next iteration
             continue
@@ -83,7 +99,7 @@ def condense_meeting_times1(list_of_tuples_of_meeting_times):
 # print condense_meeting_times1([(1, 5), (2, 3)])
 # print condense_meeting_times1([(1, 10), (2, 6), (3, 5), (7, 9)])
 
-
+# print condense_meeting_times1([(1, 10), (2, 6), (3, 5), (1, 11), (7, 9), (1, 15)])
 if __name__ == '__main__':
     import doctest
     if doctest.testmod().failed == 0:
