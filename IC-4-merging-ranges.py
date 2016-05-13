@@ -54,3 +54,8 @@ if __name__ == '__main__':
     import doctest
     if doctest.testmod().failed == 0:
         print "\n*** ALL TESTS PASSED!\n"
+
+"""Bonus Qs:
+    1. What if we did have an upper bound on the input values? Could we improve our runtime? Would it cost us memory?
+    2. Could we do this "in-place" on the input list and save some space? What are the pros and cons of doing this in-place?
+"""
