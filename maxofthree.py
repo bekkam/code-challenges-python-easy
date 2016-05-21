@@ -32,7 +32,29 @@ def max_of_three(num1, num2, num3):
     return max_num
 
 
-# Solution 2 (HB)
+# Solution 2
+def max_of_three(num1, num2, num3):
+    """Returns the largest of three integers"""
+
+    return max(num1, num2, num3)
+
+
+# Solution 3
+def max_of_three(num1, num2, num3):
+    """Returns the largest of three integers"""
+
+    if num1 > num2:
+        largest = num1
+    else:
+        largest = num2
+
+    if num3 > largest:
+        largest = num3
+
+    return largest
+
+
+# Solution 4 (HB)
 def max_of_three(num1, num2, num3):
     """Returns the largest of three integers"""
 
