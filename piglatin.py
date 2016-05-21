@@ -15,7 +15,7 @@ For example:
     'ellohay awesomeyay rogrammerpay'
 
 """
-
+# # Solution 1
 def pig_latin(phrase):
     """Turn a phrase into pig latin.
 
@@ -25,7 +25,6 @@ def pig_latin(phrase):
         'ellohay awesomeyay rogrammerpay'
     """
 
-    # COULD REFACTOR, USE LIST COMPREHENSION
     # split phrase into words
     # for each word, get the first letter
     # if the first letter is a consonant:
@@ -45,7 +44,41 @@ def pig_latin(phrase):
 
     return " ".join(result)
 
-# print pig_latin('hello awesome programmer')
+# HB Solution
+# Solution 2: Using list comprehension and helper method
+def pig_latin_word(word):
+    """Convert word to pig latin
+
+        For example::
+
+        >>> pig_latin_word('porcupine')
+        'orcupinepay'
+
+        >>> pig_latin_word('apple')
+        'appleyay'
+    """
+
+    if word[0] in 'aeiou':
+        return word + "yay"
+    else:
+        return word[1:] + word[0] + "ay"
+
+
+def pig_latin(phrase):
+    """Turn a phrase into pig latin.
+
+    There will be no uppercase letters or punctuation in the phrase.
+
+        >>> pig_latin('hello awesome programmer')
+        'ellohay awesomeyay rogrammerpay'
+    """
+
+    words = phrase.split(" ")
+
+    pl_words = [pig_latin_word(word) for word in words]
+
+    return " ".join(pl_words)
+
 
 if __name__ == '__main__':
     import doctest
